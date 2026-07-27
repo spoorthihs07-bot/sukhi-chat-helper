@@ -150,10 +150,10 @@ function Product() {
             ))}
           </ul>
           <div className="mt-10 flex flex-wrap gap-4">
-            <a href={WA} target="_blank" rel="noreferrer" className="rounded-full bg-gradient-to-r from-[#E5B84A] to-[#D4AF37] px-7 py-3.5 font-semibold text-[#3B2A1A] shadow-lg shadow-amber-300/30 hover:-translate-y-0.5 transition">Order Now</a>
-            <a href={WA} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/60 px-7 py-3.5 font-semibold text-[#FFF8E7] hover:bg-white/10 transition">
-              <MessageCircle className="h-5 w-5" /> WhatsApp
-            </a>
+            <button onClick={openSukhiChat} className="rounded-full bg-gradient-to-r from-[#E5B84A] to-[#D4AF37] px-7 py-3.5 font-semibold text-[#3B2A1A] shadow-lg shadow-amber-300/30 hover:-translate-y-0.5 transition">Order Now</button>
+            <button onClick={openSukhiChat} className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/60 px-7 py-3.5 font-semibold text-[#FFF8E7] hover:bg-white/10 transition">
+              <MessageCircle className="h-5 w-5" /> Chat with Sukhi
+            </button>
           </div>
         </div>
       </div>
