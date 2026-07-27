@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 // TODO: replace with your WhatsApp Business number in international format (no + or spaces)
-const WHATSAPP_NUMBER = "919999999999";
+const WHATSAPP_NUMBER = "919980247775";
 
 type Size = { label: string; price: string; value: string };
 type Payment = "UPI Payment" | "Cash on Delivery";
