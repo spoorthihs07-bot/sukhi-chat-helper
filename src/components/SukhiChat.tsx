@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-// WhatsApp Business number in international format (no + or spaces)
-
 type Size = { label: string; price: string; value: string };
 type Payment = "UPI Payment" | "Cash on Delivery";
 
@@ -20,12 +18,14 @@ type Step =
   | "menu"
   | "size"
   | "quantity"
-  | "address"
   | "name"
+  | "address"
   | "payment"
   | "done"
-  | "about"
-  | "team";
+  | "about";
+
+const WELCOME =
+  "Hi! 👋\n\nI'm Sukhi from Cold Natural Organics. 💚\n\nI'm here to help you.\n\nPlease choose an option.";
 
 export default function SukhiChat() {
   const [open, setOpen] = useState(false);
@@ -41,13 +41,29 @@ export default function SukhiChat() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  function resetToWelcome() {
+    setMessages([{ from: "bot", text: WELCOME }]);
+    setStep("menu");
+    setSize(null);
+    setQuantity("");
+    setAddress("");
+    setName("");
+    setPayment(null);
+    setOrderId("");
+    setInput("");
+  }
+
+  function openChat() {
+    resetToWelcome();
+    setOpen(true);
+  }
+
+  // Listen for global "open chat" events dispatched from Order Now buttons
   useEffect(() => {
-    if (open && messages.length === 0) {
-      pushBot(
-        "Hi! 👋\n\nI'm Sukhi from Cold Natural Organics. 💚\n\nI'm here to help you place your order or answer any questions.\n\nHow can I help you today? 😊"
-      );
-    }
-  }, [open]);
+    const handler = () => openChat();
+    window.addEventListener("sukhi:open", handler);
+    return () => window.removeEventListener("sukhi:open", handler);
+  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -68,7 +84,7 @@ export default function SukhiChat() {
     return step === "quantity" || step === "address" || step === "name";
   }
 
-  function handleMenu(choice: "order" | "about" | "team") {
+  function handleMenu(choice: "order" | "about" | "contact") {
     if (choice === "order") {
       pushUser("🛒 Place an Order");
       pushBot(
@@ -82,11 +98,11 @@ export default function SukhiChat() {
       );
       setStep("about");
     } else {
-      pushUser("💬 Talk to Our Team");
+      pushUser("📞 Contact Us");
       pushBot(
-        "We'd love to chat! 😊\n\nTap the button below to reach our team directly on WhatsApp."
+        "You can reach us at:\n\n📞 +91 9980247775\n📍 JP Nagar 5th Phase, Bengaluru — 560078\n\nWe'd love to hear from you! 💚"
       );
-      setStep("team");
+      setStep("about");
     }
   }
 
@@ -104,15 +120,15 @@ export default function SukhiChat() {
     setInput("");
     if (step === "quantity") {
       setQuantity(val);
-      pushBot("Got it! 📦\n\nWhat's your delivery address?");
-      setStep("address");
-    } else if (step === "address") {
-      setAddress(val);
-      pushBot("Perfect! 🏡\n\nAnd may I know your name?");
+      pushBot("Got it! 📦\n\nMay I know your name?");
       setStep("name");
     } else if (step === "name") {
       setName(val);
-      pushBot(`Thanks, ${val}! 💚\n\nHow would you like to pay?`);
+      pushBot(`Thanks, ${val}! 💚\n\nWhat's your delivery address?`);
+      setStep("address");
+    } else if (step === "address") {
+      setAddress(val);
+      pushBot("Perfect! 🏡\n\nHow would you like to pay?");
       setStep("payment");
     }
   }
@@ -122,39 +138,30 @@ export default function SukhiChat() {
     pushUser(p === "UPI Payment" ? "💳 UPI Payment" : "💵 Cash on Delivery");
     const id = "CNO-" + Date.now().toString(36).toUpperCase().slice(-6);
     setOrderId(id);
-    pushBot(
-      `Thank you, ${name}! 💚\n\nYour order has been received successfully.\n\nOrder ID: ${id}\n\nTap the button below to send your order to us on WhatsApp.\n\nWe'll confirm your order there.`
-    );
+
+    if (p === "UPI Payment") {
+      pushBot(
+        `Thank you, ${name}! 💚\n\nYour order has been received successfully.\n\nOrder ID: ${id}\n\nOpening WhatsApp now with your payment details…`
+      );
+      // Open WhatsApp automatically only for UPI
+      setTimeout(() => {
+        window.open(whatsappUrl(id, p), "_blank", "noopener,noreferrer");
+      }, 600);
+    } else {
+      pushBot(
+        `Thank you, ${name}! 💚\n\nYour order has been received successfully.\n\nOrder ID: ${id}\n\nWe'll contact you shortly to confirm your Cash on Delivery order. 📦`
+      );
+    }
     setStep("done");
   }
 
-  function whatsappUrl(customText?: string) {
-    const text =
-      customText ??
-      `Hello! 👋\nI'd like to place an order.\n\nOrder ID: ${orderId}\nName: ${name}\nProduct: Cold Pressed Groundnut Oil\nSize: ${size?.value}\nQuantity: ${quantity}\nDelivery Address: ${address}\nPayment Method: ${payment}\n\n${
-        payment === "UPI Payment"
-          ? "If Payment Method is UPI, I will wait for your payment details before making the payment."
-          : ""
-      }`;
+  function whatsappUrl(id: string, p: Payment) {
+    const text = `Hello! 👋\nI'd like to place an order.\n\nOrder ID: ${id}\nName: ${name}\nProduct: Cold Pressed Groundnut Oil\nSize: ${size?.value}\nQuantity: ${quantity}\nDelivery Address: ${address}\nPayment Method: ${p}\n\n${
+      p === "UPI Payment"
+        ? "If Payment Method is UPI, I will wait for your payment details before making the payment."
+        : ""
+    }`;
     return `https://wa.me/919980247775?text=${encodeURIComponent(text)}`;
-  }
-
-  function resetChat() {
-    setMessages([]);
-    setStep("menu");
-    setSize(null);
-    setQuantity("");
-    setAddress("");
-    setName("");
-    setPayment(null);
-    setOrderId("");
-    setTimeout(
-      () =>
-        pushBot(
-          "Hi again! 👋 How can I help you today? 😊"
-        ),
-      100
-    );
   }
 
   return (
@@ -162,8 +169,8 @@ export default function SukhiChat() {
       {/* Floating button */}
       {!open && (
         <button
-          onClick={() => setOpen(true)}
-          className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 px-5 py-3 text-white shadow-2xl transition-transform hover:scale-105 animate-bounce-slow"
+          onClick={openChat}
+          className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 px-5 py-3 text-white shadow-2xl transition-transform hover:scale-105"
           style={{ animation: "sukhi-pulse 2.4s ease-in-out infinite" }}
           aria-label="Chat with Sukhi"
         >
@@ -189,7 +196,7 @@ export default function SukhiChat() {
               </div>
               <div className="flex items-center gap-1">
                 <button
-                  onClick={resetChat}
+                  onClick={resetToWelcome}
                   className="rounded p-1 text-xs hover:bg-white/20"
                   title="Restart chat"
                 >
@@ -233,7 +240,7 @@ export default function SukhiChat() {
                   <>
                     <QuickBtn onClick={() => handleMenu("order")}>🛒 Place an Order</QuickBtn>
                     <QuickBtn onClick={() => handleMenu("about")}>🌿 About Our Oil</QuickBtn>
-                    <QuickBtn onClick={() => handleMenu("team")}>💬 Talk to Our Team</QuickBtn>
+                    <QuickBtn onClick={() => handleMenu("contact")}>📞 Contact Us</QuickBtn>
                   </>
                 )}
                 {step === "size" &&
@@ -252,33 +259,21 @@ export default function SukhiChat() {
                     </QuickBtn>
                   </>
                 )}
-                {step === "done" && (
+                {step === "done" && payment === "UPI Payment" && (
                   <a
-                    href={whatsappUrl()}
+                    href={whatsappUrl(orderId, "UPI Payment")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full rounded-xl bg-green-500 px-4 py-3 text-center font-semibold text-white shadow-md transition hover:bg-green-600"
                   >
-                    📱 Send Order on WhatsApp
+                    📱 Open WhatsApp Again
                   </a>
                 )}
                 {step === "about" && (
                   <>
                     <QuickBtn onClick={() => handleMenu("order")}>🛒 Place an Order</QuickBtn>
-                    <QuickBtn onClick={() => handleMenu("team")}>💬 Talk to Our Team</QuickBtn>
+                    <QuickBtn onClick={resetToWelcome}>↩︎ Back to Menu</QuickBtn>
                   </>
-                )}
-                {step === "team" && (
-                  <a
-                    href={whatsappUrl(
-                      "Hello! 👋 I'd like to chat with your team about Cold Natural Organics."
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full rounded-xl bg-green-500 px-4 py-3 text-center font-semibold text-white shadow-md transition hover:bg-green-600"
-                  >
-                    📱 Chat on WhatsApp
-                  </a>
                 )}
               </div>
             </div>
@@ -317,6 +312,8 @@ export default function SukhiChat() {
           0%, 100% { transform: translateY(0); box-shadow: 0 10px 25px -5px rgba(245,158,11,0.5); }
           50% { transform: translateY(-4px); box-shadow: 0 18px 30px -5px rgba(245,158,11,0.55); }
         }
+        html { scroll-behavior: smooth; }
+        section[id] { scroll-margin-top: 80px; }
       `}</style>
     </>
   );
