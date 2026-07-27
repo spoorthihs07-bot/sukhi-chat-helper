@@ -38,7 +38,7 @@ function NavBar() {
           <a href="#product" className={link}>Product</a>
           <a href="#contact" className={link}>Contact</a>
         </nav>
-        <a href={WA} target="_blank" rel="noreferrer" className="rounded-full bg-gradient-to-r from-[#E5B84A] to-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#3B2A1A] shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition">Order Now</a>
+        <button onClick={openSukhiChat} className="rounded-full bg-gradient-to-r from-[#E5B84A] to-[#D4AF37] px-5 py-2.5 text-sm font-semibold text-[#3B2A1A] shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition">Order Now</button>
       </div>
     </header>
   );
