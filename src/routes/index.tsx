@@ -19,6 +19,13 @@ const WA = "https://wa.me/919980247775";
 const TEL = "tel:+919980247775";
 const MAPS = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent("No. 8, 19th Cross, 20th Main, SMS Layout, JP Nagar 5th Phase, Bengaluru South, Karnataka 560078");
 
+function openSukhiChat(e?: { preventDefault: () => void }) {
+  e?.preventDefault();
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event("sukhi:open"));
+  }
+}
+
 function NavBar() {
   const link = "text-[#3B2A1A] hover:text-[#8B6A1F] transition text-[15px] font-medium";
   return (
