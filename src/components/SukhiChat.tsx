@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-// TODO: replace with your WhatsApp Business number in international format (no + or spaces)
-const WHATSAPP_NUMBER = "919980247775";
+// WhatsApp Business number in international format (no + or spaces)
 
 type Size = { label: string; price: string; value: string };
 type Payment = "UPI Payment" | "Cash on Delivery";
@@ -137,7 +136,7 @@ export default function SukhiChat() {
           ? "If Payment Method is UPI, I will wait for your payment details before making the payment."
           : ""
       }`;
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/919980247775?text=${encodeURIComponent(text)}`;
   }
 
   function resetChat() {
