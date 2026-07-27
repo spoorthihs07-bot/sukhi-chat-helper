@@ -58,9 +58,9 @@ function Hero() {
         </h2>
         <p className="mt-5 text-[16px] md:text-[22px] text-white/85 tracking-wide">Natural • Pure • No Preservatives</p>
         <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
-          <a href={WA} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-[17px] md:text-[19px] font-semibold text-white shadow-2xl shadow-black/30 transition-all hover:-translate-y-0.5 hover:bg-[#1ebe57]">
-            <MessageCircle className="h-5 w-5" /> Order on WhatsApp
-          </a>
+          <button onClick={openSukhiChat} className="inline-flex items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-[17px] md:text-[19px] font-semibold text-white shadow-2xl shadow-black/30 transition-all hover:-translate-y-0.5 hover:bg-[#1ebe57]">
+            <MessageCircle className="h-5 w-5" /> Order Now
+          </button>
           <a href="#about" className="inline-flex items-center rounded-full border border-white/70 px-8 py-4 text-[17px] md:text-[19px] font-semibold text-white hover:bg-white/10 transition">Explore More</a>
         </div>
       </div>
