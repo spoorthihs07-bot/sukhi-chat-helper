@@ -296,6 +296,7 @@ function Index() {
       <About />
       <Why />
       <Product />
+      <ComingSoon />
       <Contact />
       <Footer />
     </div>
