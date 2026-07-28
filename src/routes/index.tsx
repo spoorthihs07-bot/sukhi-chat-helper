@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Leaf, Sprout, Heart, ShieldCheck, MapPin, Phone, MessageCircle, Navigation, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { Leaf, Sprout, Heart, ShieldCheck, MapPin, Phone, MessageCircle, Navigation, ChevronDown, PlayCircle, X, Clock } from "lucide-react";
+import brandVideo from "../assets/sukhi-brand.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -45,28 +47,47 @@ function NavBar() {
 }
 
 function Hero() {
+  const [showVideo, setShowVideo] = useState(false);
   return (
     <section id="top" className="relative h-[100svh] w-full overflow-hidden bg-[#3B2A1A]">
       <video src="https://sukhipure.netlify.app/hero.mp4" autoPlay muted loop playsInline preload="auto" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white">
-        <div className="mb-4 text-xs md:text-sm uppercase tracking-[0.4em] text-[#D4AF37]">Cold Natural Organics</div>
-        <h1 className="font-display font-bold leading-none tracking-wide text-[44px] md:text-[80px]">SUKHI</h1>
-        <p className="mt-3 font-display italic text-[#FFF8E7] text-[22px] md:text-[30px]">Healthy &amp; Tasty</p>
-        <h2 className="mt-6 max-w-3xl font-display text-[30px] md:text-[54px] leading-tight">
+        <div className="mb-4 text-sm md:text-base uppercase tracking-[0.4em] text-[#D4AF37]">Cold Natural Organics</div>
+        <h1 className="font-display font-bold leading-none tracking-wide text-[48px] md:text-[88px]">SUKHI</h1>
+        <p className="mt-3 font-display italic text-[#FFF8E7] text-[24px] md:text-[32px]">Healthy &amp; Tasty</p>
+        <h2 className="mt-6 max-w-3xl font-display text-[32px] md:text-[58px] leading-tight">
           100% Pure Cold Pressed <br className="hidden md:block" />Groundnut Oil
         </h2>
-        <p className="mt-5 text-[16px] md:text-[22px] text-white/85 tracking-wide">Natural • Pure • No Preservatives</p>
+        <p className="mt-5 text-[18px] md:text-[23px] text-white/85 tracking-wide">Natural • Pure • No Preservatives</p>
         <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
-          <button onClick={openSukhiChat} className="inline-flex items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-[17px] md:text-[19px] font-semibold text-white shadow-2xl shadow-black/30 transition-all hover:-translate-y-0.5 hover:bg-[#1ebe57]">
+          <button onClick={openSukhiChat} className="inline-flex items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-[18px] md:text-[20px] font-semibold text-white shadow-2xl shadow-black/30 transition-all hover:-translate-y-0.5 hover:bg-[#1ebe57]">
             <MessageCircle className="h-5 w-5" /> Order Now
           </button>
-          <a href="#about" className="inline-flex items-center rounded-full border border-white/70 px-8 py-4 text-[17px] md:text-[19px] font-semibold text-white hover:bg-white/10 transition">Explore More</a>
+          <button onClick={() => setShowVideo(true)} className="inline-flex items-center gap-3 rounded-full border border-white/70 px-8 py-4 text-[18px] md:text-[20px] font-semibold text-white hover:bg-white/10 transition">
+            <PlayCircle className="h-5 w-5" /> Know More About Us
+          </button>
         </div>
       </div>
       <a href="#about" aria-label="Scroll down" className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 animate-bounce">
         <ChevronDown className="h-8 w-8" />
       </a>
+
+      {showVideo && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/85 p-4" onClick={() => setShowVideo(false)}>
+          <button aria-label="Close video" className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20" onClick={() => setShowVideo(false)}>
+            <X className="h-6 w-6" />
+          </button>
+          <video
+            src={brandVideo.url}
+            controls
+            autoPlay
+            playsInline
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[90vh] w-full max-w-4xl rounded-2xl shadow-2xl bg-black"
+          />
+        </div>
+      )}
     </section>
   );
 }
@@ -161,6 +182,38 @@ function Product() {
   );
 }
 
+function ComingSoon() {
+  const items = [
+    { name: "Coconut Oil", desc: "Cold pressed from sun-dried coconuts — coming soon to your kitchen.", emoji: "🥥" },
+    { name: "Sunflower Oil", desc: "Light, heart-friendly cold pressed sunflower oil — launching soon.", emoji: "🌻" },
+  ];
+  return (
+    <section id="coming-soon" className="bg-[#FFF3D6] py-24 md:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="text-center">
+          <div className="text-xs uppercase tracking-[0.4em] text-[#8B6A1F]">Coming Soon</div>
+          <h2 className="mt-4 font-display text-[38px] md:text-[52px] text-[#3B2A1A]">More Pure Oils On The Way</h2>
+          <div className="mx-auto mt-6 h-[3px] w-24 bg-[#D4AF37]" />
+          <p className="mt-6 text-[17px] text-[#5A4632] max-w-2xl mx-auto">Two new additions to the SUKHI family — crafted with the same cold pressed care. Not yet available for ordering.</p>
+        </div>
+        <div className="mt-14 grid gap-8 sm:grid-cols-2">
+          {items.map((it) => (
+            <div key={it.name} className="relative rounded-2xl border border-[#EADFC2] bg-white p-8 shadow-sm text-center">
+              <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-[#3B2A1A] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#D4AF37]">
+                <Clock className="h-3 w-3" /> Coming Soon
+              </span>
+              <div className="text-6xl">{it.emoji}</div>
+              <h3 className="mt-5 font-display text-[26px] text-[#3B2A1A]">{it.name}</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#5A4632]">{it.desc}</p>
+              <button disabled className="mt-6 rounded-full bg-[#EADFC2] px-6 py-2.5 text-sm font-semibold text-[#8B6A1F] cursor-not-allowed">Not Available Yet</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   const mapSrc = "https://www.google.com/maps?q=" + encodeURIComponent("No. 8, 19th Cross, 20th Main, SMS Layout, JP Nagar 5th Phase, Bengaluru South, Karnataka 560078") + "&output=embed";
   return (
@@ -243,6 +296,7 @@ function Index() {
       <About />
       <Why />
       <Product />
+      <ComingSoon />
       <Contact />
       <Footer />
     </div>
