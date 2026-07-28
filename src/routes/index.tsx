@@ -182,6 +182,38 @@ function Product() {
   );
 }
 
+function ComingSoon() {
+  const items = [
+    { name: "Coconut Oil", desc: "Cold pressed from sun-dried coconuts — coming soon to your kitchen.", emoji: "🥥" },
+    { name: "Sunflower Oil", desc: "Light, heart-friendly cold pressed sunflower oil — launching soon.", emoji: "🌻" },
+  ];
+  return (
+    <section id="coming-soon" className="bg-[#FFF3D6] py-24 md:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="text-center">
+          <div className="text-xs uppercase tracking-[0.4em] text-[#8B6A1F]">Coming Soon</div>
+          <h2 className="mt-4 font-display text-[38px] md:text-[52px] text-[#3B2A1A]">More Pure Oils On The Way</h2>
+          <div className="mx-auto mt-6 h-[3px] w-24 bg-[#D4AF37]" />
+          <p className="mt-6 text-[17px] text-[#5A4632] max-w-2xl mx-auto">Two new additions to the SUKHI family — crafted with the same cold pressed care. Not yet available for ordering.</p>
+        </div>
+        <div className="mt-14 grid gap-8 sm:grid-cols-2">
+          {items.map((it) => (
+            <div key={it.name} className="relative rounded-2xl border border-[#EADFC2] bg-white p-8 shadow-sm text-center">
+              <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-[#3B2A1A] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#D4AF37]">
+                <Clock className="h-3 w-3" /> Coming Soon
+              </span>
+              <div className="text-6xl">{it.emoji}</div>
+              <h3 className="mt-5 font-display text-[26px] text-[#3B2A1A]">{it.name}</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#5A4632]">{it.desc}</p>
+              <button disabled className="mt-6 rounded-full bg-[#EADFC2] px-6 py-2.5 text-sm font-semibold text-[#8B6A1F] cursor-not-allowed">Not Available Yet</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   const mapSrc = "https://www.google.com/maps?q=" + encodeURIComponent("No. 8, 19th Cross, 20th Main, SMS Layout, JP Nagar 5th Phase, Bengaluru South, Karnataka 560078") + "&output=embed";
   return (
