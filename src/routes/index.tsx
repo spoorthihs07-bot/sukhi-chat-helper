@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Leaf, Sprout, Heart, ShieldCheck, MapPin, Phone, MessageCircle, Navigation, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { Leaf, Sprout, Heart, ShieldCheck, MapPin, Phone, MessageCircle, Navigation, ChevronDown, PlayCircle, X, Clock } from "lucide-react";
+import brandVideo from "../assets/sukhi-brand.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
