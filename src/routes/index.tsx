@@ -50,7 +50,7 @@ function Hero() {
   const [showVideo, setShowVideo] = useState(false);
   return (
     <section id="top" className="relative h-[100svh] w-full overflow-hidden bg-[#3B2A1A]">
-      <video src="https://sukhipure.netlify.app/hero.mp4" autoPlay muted loop playsInline preload="auto" className="absolute inset-0 h-full w-full object-cover" />
+      <video src="/hero.mp4" autoPlay muted loop playsInline preload="auto" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white">
         <div className="mb-4 text-sm md:text-base uppercase tracking-[0.4em] text-[#D4AF37]">Cold Natural Organics</div>
@@ -79,13 +79,17 @@ function Hero() {
             <X className="h-6 w-6" />
           </button>
           <video
-            src={brandVideo.url}
+            src={brandVideo.url || "/hero.mp4"}
             controls
             autoPlay
             playsInline
             onClick={(e) => e.stopPropagation()}
             className="max-h-[90vh] w-full max-w-4xl rounded-2xl shadow-2xl bg-black"
-          />
+          >
+            <source src={brandVideo.url || "/hero.mp4"} type="video/mp4" />
+            <source src="https://sukhipure.netlify.app/hero.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       )}
     </section>
