@@ -79,15 +79,15 @@ function Hero() {
             <X className="h-6 w-6" />
           </button>
           <video
-            src={brandVideo.url || "/hero.mp4"}
+            src={brandVideo.url || "/sukhi-brand.mp4"}
             controls
             autoPlay
             playsInline
             onClick={(e) => e.stopPropagation()}
             className="max-h-[90vh] w-full max-w-4xl rounded-2xl shadow-2xl bg-black"
           >
-            <source src={brandVideo.url || "/hero.mp4"} type="video/mp4" />
-            <source src="https://sukhipure.netlify.app/hero.mp4" type="video/mp4" />
+            <source src={brandVideo.url || "/sukhi-brand.mp4"} type="video/mp4" />
+            <source src="/sukhi-brand.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
