@@ -172,7 +172,7 @@ export default function SukhiChat() {
       `Thank you, ${name}! 💚\n\nYour order has been received successfully.\n\nOrder ID: ${id}\n\nOpening WhatsApp now with your order details…`
     );
     setTimeout(() => {
-      window.open(whatsappUrl(id, p, delivery, p === "Home Delivery" ? address : outlet), "_blank", "noopener,noreferrer");
+      window.open(whatsappUrl(id, p, delivery, delivery === "Home Delivery" ? address : outlet), "_blank", "noopener,noreferrer");
     }, 600);
     setStep("done");
   }
