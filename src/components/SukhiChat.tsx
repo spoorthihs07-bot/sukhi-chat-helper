@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { createOrder } from "@/lib/orders.functions";
 
 type Size = { label: string; price: string; value: string };
 type Payment = "UPI Payment" | "Cash on Delivery";
@@ -162,19 +164,46 @@ export default function SukhiChat() {
     setStep("payment");
   }
 
-  function choosePayment(p: Payment) {
+  const submitOrder = useServerFn(createOrder);
+
+  async function choosePayment(p: Payment) {
     setPayment(p);
     pushUser(p === "UPI Payment" ? "💳 UPI Payment" : "💵 Cash on Delivery");
     const id = "CNO-" + Date.now().toString(36).toUpperCase().slice(-6);
     setOrderId(id);
+    setStep("done");
+
+    const priceNum = Number((size?.price ?? "").replace(/[^\d.]/g, "")) || 0;
+    const qtyNum = Math.max(1, parseInt(quantity || "1", 10) || 1);
+
+    try {
+      await submitOrder({
+        data: {
+          order_id: id,
+          name,
+          size: size?.value ?? "",
+          price: priceNum,
+          quantity: qtyNum,
+          delivery: (delivery ?? "Home Delivery") as Delivery,
+          address,
+          outlet,
+          payment: p,
+        },
+      });
+    } catch (e) {
+      console.error("Order save failed", e);
+    }
 
     pushBot(
-      `Thank you, ${name}! 💚\n\nYour order has been received successfully.\n\nOrder ID: ${id}\n\nOpening WhatsApp now with your order details…`
+      `Thank you, ${name}! 💚\n\nYour order has been received successfully.\n\nOrder ID: ${id}\n\nOpening WhatsApp now with your order details…`,
     );
     setTimeout(() => {
-      window.open(whatsappUrl(id, p, delivery, delivery === "Home Delivery" ? address : outlet), "_blank", "noopener,noreferrer");
+      window.open(
+        whatsappUrl(id, p, delivery, delivery === "Home Delivery" ? address : outlet),
+        "_blank",
+        "noopener,noreferrer",
+      );
     }, 600);
-    setStep("done");
   }
 
   function whatsappUrl(id: string, p: Payment, d: Delivery | null, loc: string) {
