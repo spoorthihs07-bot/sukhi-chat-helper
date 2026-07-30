@@ -38,7 +38,7 @@ export const createOrder = createServerFn({ method: "POST" })
       .from("orders")
       .insert({
         customer_name: data.name,
-        phone_no: "",
+        "phone no.": "",
         address: location,
         product: `Cold Pressed Groundnut Oil (${data.size})`,
         quantity: data.quantity,
