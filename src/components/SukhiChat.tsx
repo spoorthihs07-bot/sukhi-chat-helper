@@ -192,6 +192,10 @@ export default function SukhiChat() {
       });
     } catch (e) {
       console.error("Order save failed", e);
+      pushBot(
+        "Sorry, we couldn't save your order just now. 😔\n\nPlease try again in a moment, or call us at +91 9980247775.",
+      );
+      return;
     }
 
     pushBot(
