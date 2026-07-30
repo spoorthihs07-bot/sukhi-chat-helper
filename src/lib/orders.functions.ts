@@ -44,7 +44,7 @@ export const createOrder = createServerFn({ method: "POST" })
         quantity: data.quantity,
         total_amount: data.price * data.quantity,
         payment_status: data.payment === "UPI Payment" ? "awaiting_upi" : "pending_cod",
-        order_status: "new",
+        order_status: "Pending Payment",
         notes,
       })
       .select("id")
