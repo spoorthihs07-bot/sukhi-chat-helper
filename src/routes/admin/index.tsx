@@ -20,7 +20,7 @@ type Order = {
   id: number;
   created_at: string;
   customer_name: string | null;
-  phone_no: string | null;
+  "phone no."?: string | null;
   address: string | null;
   product: string | null;
   quantity: number | null;

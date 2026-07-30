@@ -1,6 +1,11 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const url = process.env.EXT_SUPABASE_URL as string;
+// The stored URL may include a trailing "/rest/v1/" (copied from the API docs);
+// supabase-js expects the bare project URL, otherwise PostgREST returns PGRST125.
+const url = (process.env.EXT_SUPABASE_URL as string | undefined)
+  ?.trim()
+  .replace(/\/+$/, "")
+  .replace(/\/rest\/v1$/, "") as string;
 const anonKey = process.env.EXT_SUPABASE_ANON_KEY as string;
 const serviceKey = process.env.EXT_SUPABASE_SERVICE_ROLE_KEY as string;
 
